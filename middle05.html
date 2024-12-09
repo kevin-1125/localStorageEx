@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>點餐系統</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .menu{
+            margin: 20px 0;
+        }
+        .menu-item{
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .history{
+            display: flex;
+            justify-content: center;
+        }
+        .history-item{
+            width: 100px;
+            height: 100px;
+            margin: 5px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>點餐系統</h1>
+    <div class="menu">
+        <table border="1" align="center">
+            <tr>
+                <td><img class="menu-item" src="images/food-1.jpg" alt="菜品1"></td>
+                <td><img class="menu-item" src="images/food-2.jpg" alt="菜品2"></td>
+                <td><img class="menu-item" src="images/food-3.jpg" alt="菜品3"></td>
+            </tr>
+            <tr>
+                <td><img class="menu-item" src="images/food-4.jpg" alt="菜品4"></td>
+                <td><img class="menu-item" src="images/food-5.jpg" alt="菜品5"></td>
+                <td><img class="menu-item" src="images/food-6.jpg" alt="菜品6"></td>
+            </tr>
+        </table>
+    </div>
+    <h2>以瀏覽過的菜品</h2>
+    <div class="history" id="history">
+        <div class="history-item"></div>
+        <div class="history-item"></div>
+        <div class="history-item"></div>
+        <div class="history-item"></div>
+        <div class="history-item"></div>
+        <div class="history-item"></div>
+    </div>
+    <button id="clear-history">清除以點擊內容</button>
+
+    <script>
+        $(document).ready(function(){
+            //從 localStorage 讀取歷史紀錄
+            let history = JSON.parse(localStorage.getItem('history')) || [];
+
+            //顯示瀏覽過的菜品
+            function displayHistory(){
+                $('.history-item').empty();
+                history.forEach((item,index)=>{
+                    if(index <6){
+                        $('.history-item').eq(index).html(`<img src="${item}" alt="以瀏覽過的菜品" style="width:100%; height="100%">`);
+
+                    }
+                });
+            }
+
+            displayHistory();
+
+            //點擊蔡圖片更新事件
+            $('.menu-item').click(function(){
+                const src=$(this).attr('src');
+                if(!history.includes(src)){
+                    if(!history.lenght <6){
+                        history.push(src);
+                    }else{
+                        histpry.shift();//刪除最舊的
+                        history.push(src);
+                    }
+                    localStorage.setItem('history',JSON.stringify(history));
+                    displayHistory();
+                    $(this).css('opaccity','0.5');//標記以瀏覽
+                }
+            });
+
+            //清除以點擊內容
+            $('#clear-history').click(function(){
+                history=[];
+                localStorage.removeItem('history');
+                displayHistory();
+                $('.menu-item').css('opacity','1');//重製菜單項目顯示
+            });
+        });
+    </script>
+</body>
+</html>

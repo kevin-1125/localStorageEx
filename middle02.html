@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>書籍登錄系統</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>書籍登錄系統</h2>
+        <label for="bookName">書名:</label>
+        <input type="text" id="bookName" placeholder="請輸入書名">
+        <button id="addBook">新增書籍</button>
+        <p>目前書籍數量:<span id="bookCount">0</span></p>
+        <div class="book-list" id="bookList"></div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            let bookCount = 0;
+
+            //當按下新增書籍按鈕
+            $("#addBook").click(function(){
+                const bookName = $("#bookName").val().trim();
+
+                //驗證是否為空
+                if(bookName == ''){
+                    alert("不可空白無資料輸入");
+                    return ;
+                }
+
+                //新增書籍到列表中
+                $('#bookList').append('<div class="bookitem">' + bookName + '</div>');
+                $('#bookName').val('');//清空輸入框
+
+                //更新書籍數量
+                bookCount++;
+                $('#bookCount').text(bookCount);
+            })
+        });
+    </script>
+</body>
+</html>
